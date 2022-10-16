@@ -1,15 +1,17 @@
+local Players = game:GetService("Players")
 local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
 local MainWindow = OrionLib:MakeWindow({Name = "Godly Hub | Mad City", HidePremium = false, IntroEnabled = false, SaveConfig = true, ConfigFolder = "OrionTest"})
 
-local Players = game:GetService("Players")
+local LcPlr = Players.LocalPlayer
+local SilentAimFOV = 260
 local FOVRadius = 80
-getgenv().AutoRob = true
+local FOVVisible = true
 
-local FarmTab = MainWindow:MakeTab({
-	Name = "Farm Tab",
-	Icon = "rbxassetid://4483345998",
-	PremiumOnly = false
-})
+function AutoRob()
+    if getgenv().AutoRob == true then
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/itsnoctural/Destiny/main/scripts/Mad%20City%20Chapter%202/main.lua",true))()
+    end
+end
 
 local CombatTab = MainWindow:MakeTab({
 	Name = "Combat Tab",
@@ -29,7 +31,7 @@ CombatTab:AddButton({
               local Holding = false
               
               _G.AimbotEnabled = true
-              _G.TeamCheck = true -- If set to true then the script would only lock your aim at enemy team members.
+              _G.TeamCheck = false -- If set to true then the script would only lock your aim at enemy team members.
               _G.AimPart = "Head" -- Where the aimbot script would lock at.
               _G.Sensitivity = 0 -- How many seconds it takes for the aimbot script to officially lock onto the target's aimpart.
               
@@ -136,24 +138,12 @@ CombatTab:AddSlider({
 	end    
 })
 
-local EspTab = MainWindow:MakeTab({
-    Name = "Esp Tab",
-    Icon = "rbxassetid://4483345998",
-    PremiumOnly = false
-})
-
-EspTab:AddButton({
-    Name = "Esp",
-    Callback = function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/DcYhL/Godly-Hub.Esp/main/Godly%20Hub%20Esp", true))()
-
-        OrionLib:MakeNotification({
-            Name = "Esp Window Opened",
-            Content = "The Window For Esp Is Opened",
-            Image = "rbxassetid://4483345998",
-            Time = 5
-        }) 
-    end
+CombatTab:AddToggle({
+	Name = "Toggle FOV Circle",
+	Default = false,
+	Callback = function(Value)
+		FOVVisible = Value
+	end    
 })
 
 local AboutTab = MainWindow:MakeTab({
@@ -173,8 +163,8 @@ AboutTab:AddButton({
             Content = "Discord Invite Link Copied To Clipboard",
             Image = "rbxassetid://4483345998",
             Time = 10
-        })  
-  	end  
+        })
+  	end    
 })
 
 OrionLib:Init()
